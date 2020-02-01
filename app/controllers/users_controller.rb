@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   
-  before_action :login_confirmation , only:[:index, :show]
+  before_action :login_confirmation , only:[:index, :show, :followings, :followers]
   
   def index
     @users = User.order(id: :desc).page(params[:page]).per(10)
@@ -8,7 +8,7 @@ class UsersController < ApplicationController
   
   def show
     @user = User.find(params[:id])
-    @post = @user.posts.order(id: :desc).page(params[:page])
+    @posts = @user.posts.order(id: :desc).page(params[:page])
     counts(@user)
   end
   
@@ -52,6 +52,18 @@ class UsersController < ApplicationController
     flash[:success] = "ユーザーを削除しました"
     redirect_to signup_url 
     
+  end
+  
+  def followings
+    @user = User.find(params[:id])
+    @followings = @user.followings.page(params[:page])
+    counts(@user)
+  end
+  
+  def followers
+    @user = User.find(params[:id])
+    @followers = @user.followers.page(params[:page])
+    counts(@user)
   end
 
   private
