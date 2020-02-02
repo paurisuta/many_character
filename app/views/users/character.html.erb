@@ -1,0 +1,26 @@
+<div class="card">
+  <div class="card-header">
+    自分のキャラを書き出してみよう！（二つ書くと自分のプロフィールに載せることができるよ！）
+  </div>
+  <div class="card-body">
+    
+    <%= form_with(model: @user, local: true) do |f| %>
+    
+    <div class="form-group">
+        <%= f.label :chara1 , "一つ目" %>
+        <%= f.text_field :chara1 , class: "form-control" %>
+    </div>
+    
+    <div class="form-group">
+        <%= f.label :chara2 , "二つ目" %>
+        <%= f.text_field :chara2 , class: "form-control" %>
+    </div>
+    
+    <%= f.submit "キャラを登録する", class: "btn btn-primary" %>
+    
+    <% end %>
+      
+    </div>
+      
+  </div>
+</div>

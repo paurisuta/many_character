@@ -5,17 +5,34 @@
           <div class="row">
             <div class="col-sm-6">
               <div class="card-body">
-                <img class="rounded img-fluid" src="<%= gravatar_url(@user, { size: 500 }) %>" alt="">
+                <% if @user.image? %>
+                  <%= image_tag @user.image.url, class: "w-100 h-100" %>
+                <% else %>
+                  <img class="rounded img-fluid" src="<%= gravatar_url(@user, { size: 500 }) %>" alt="">
+                <% end %>  
                 <%= render "relations/follow_button", user: @user %>
                 <% if current_user.id == @user.id %>
-                  <%= link_to "ユーザー内容を編集する", edit_user_path, class: "btn btn-primary mt-3" %>
-                  <%= link_to "このユーザーを削除する", @user, method: :delete, data: { confirm: "本当に削除してよろしいですか？" }, class: "btn btn-danger mt-3" %>
+                  <div class="text-center">
+                    <%= link_to "ユーザー内容を編集する", edit_user_path, class: "btn btn-primary mt-3" %>
+                    <%= link_to "このユーザーを削除する", @user, method: :delete, data: { confirm: "本当に削除してよろしいですか？" }, class: "btn btn-danger mt-3" %>
+                  </div>  
                 <% end %>
               </div>
             </div>
             <div class="col-sm-6">
-              <div class="card-body">
-                <img class="rounded img-fluid" src="<%= gravatar_url(@user, { size: 500 }) %>" alt="">
+              <div class="card-body text-center">
+                  <% if @user.chara1? && @user.chara2? %>
+                    <h1><%= @user.name %>さんのメニキャラは！！！</h1>
+                    <h2 class="mt-5"><%= @user.chara1 %></h2>
+                    <h2>と</h2>
+                    <h2><%= @user.chara2 %></h2>
+                    <% if current_user.id == @user.id  %>
+                      <%= link_to "メニキャラを編集する", character_user_path , class: "btn btn-primary mt-3"%>
+                    <% end %>  
+                  <% else %>
+                    <h2 class="mt-5">みんなの持つキャラは一つでなくていい。<br>さあメニキャラへ進もう！</h2>
+                    <%= link_to "メニキャラを書いてみよう！", character_user_path , class: "btn btn-primary mt-3" %>
+                  <% end %>
               </div>
             </div>
           </div>
