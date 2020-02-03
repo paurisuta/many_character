@@ -3,9 +3,9 @@
     <% users.each do |user| %>
       <li class="media list-group-item">
         <% if user.image? %>
-        <div class="index-image">
-          <%= image_tag user.image.url, class: "w-100 h-100" %>
-        </div>  
+          <div class="index-image">
+            <%= image_tag user.image.url, class: "w-100 h-100" %>
+          </div>  
         <% else %>  
           <img class="mr-2 rounded" src="<%= gravatar_url(user, { size: 50 }) %>" alt="">
         <% end %>  

@@ -1,22 +1,29 @@
 <ul class="list-unstyled">
   <% posts.each do |post| %>
     <li class="media mb-3">
-      <img class="mr-2 rounded" src="<%= gravatar_url(post.user, { size: 50 }) %>" alt="">
+      <% if post.user.image? %>
+        <div class="index-image">
+          <%= image_tag post.user.image.url, class: "w-100 h-100" %>
+        </div>
+      <% else %>  
+        <img class="mr-2 rounded" src="<%= gravatar_url(post.user, { size: 50 }) %>" alt="">
+      <% end %>
       <div class="media-body">
-        <div>
+        <div class="ml-2">
           <%= link_to post.user.name, user_path(post.user) %> <span class="text-muted">（作成日 <%= post.created_at %>）</span>
         </div>
-        <div>
+        <div class="ml-2">
           <p><%= post.content %></p>
         </div>
-        <div>
-          <% if current_user == post.user %>
-            <%= link_to "削除", post, method: :delete, data: { confirm: "You sure?" }, class: 'btn btn-danger btn-sm' %>
-          <% end %>
+        <div style="display:inline-flex">
           <%= render "favorites/favorite_button" , post: post %>
+          <% if current_user == post.user %>
+            <%= link_to "削除", post, method: :delete, data: { confirm: "本当に削除してよろしいですか?" }, class: 'btn btn-danger btn-sm ml-2' %>
+          <% end %>
         </div>
       </div>
     </li>
   <% end %>
   <%= paginate posts %>
 </ul>
+

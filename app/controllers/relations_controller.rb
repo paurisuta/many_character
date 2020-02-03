@@ -16,4 +16,5 @@ class RelationsController < ApplicationController
     redirect_to user
   end
   
+  
 end

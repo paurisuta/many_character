@@ -1,12 +1,12 @@
 class UsersController < ApplicationController
   before_action :login_confirmation , only:[:index, :show, :followings, :followers, :likes, :character]
-  
+  before_action :set_user , only:[:show,:edit,:update,:destroy,:followings,:followers,:likes,:character]
+    
   def index
     @users = User.order(id: :desc).page(params[:page]).per(10)
   end
-  
+
   def show
-    @user = User.find(params[:id])
     @posts = @user.posts.order(id: :desc).page(params[:page])
     counts(@user)
   end
@@ -29,53 +29,47 @@ class UsersController < ApplicationController
   end
   
   def edit
-    @user = User.find(params[:id])
   end
   
   def update
-    @user = User.find(params[:id])
-    
     if @user.update(user_params)
       flash[:success] = "ユーザー内容を更新しました"
       redirect_to @user
     else
       flash.now[:danger] = "ユーザー内容を更新できませんでした"
-      redirect_to :edit
+      render :edit
     end
   end
   
   def destroy
-    @user = User.find(params[:id])
-    
     @user.destroy
     flash[:success] = "ユーザーを削除しました"
     redirect_to signup_url 
-    
   end
   
   def followings
-    @user = User.find(params[:id])
     @followings = @user.followings.page(params[:page])
     counts(@user)
   end
   
   def followers
-    @user = User.find(params[:id])
     @followers = @user.followers.page(params[:page])
     counts(@user)
   end
   
   def likes
-    @user = User.find(params[:id])
     @likings = @user.likings.page(params[:page])
     counts(@user)
   end
   
   def character
-    @user = User.find(params[:id])
   end
 
   private
+  
+  def set_user
+    @user = User.find(params[:id])
+  end
   
   def user_params
     params.require(:user).permit(:name, :email, :password, :password_confirmation, :image, :chara1, :chara2)
